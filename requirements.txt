@@ -3,7 +3,12 @@ uvicorn[standard]
 sqlalchemy
 psycopg2-binary
 pydantic[email]>=2.0.0
-passlib[bcrypt]
+
+# password hashing stack
+passlib[bcrypt]==1.7.4
+bcrypt==3.2.2
+
+# testing
 pytest
 pytest-cov
 httpx
