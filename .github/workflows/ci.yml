@@ -63,4 +63,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/fastapi-calculator:latest
+          tags: ashika2031/fastapi-calculator:latest
