@@ -44,15 +44,21 @@ jobs:
       - name: Run tests with coverage (fail if coverage < 100%)
         run: |
           # verbose output helps diagnose stalls: list tests as they run
-          pytest --maxfail=1 --disable-warnings -vv --cov=app --cov-fail-under=100
+          # generate XML and HTML reports so they can be uploaded as artifacts
+          pytest --maxfail=1 --disable-warnings -vv \
+            --cov=app --cov-fail-under=100 \
+            --cov-report=term-missing \
+            --cov-report=xml:coverage.xml \
+            --cov-report=html
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: |
+            coverage.xml
+            htmlcov/**
             .coverage
-            htmlcov
 
   docker:
     needs: test
