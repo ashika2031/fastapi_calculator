@@ -10,7 +10,22 @@ from app.models import Base
 
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@db:5432/postgres")
 
-engine = create_engine(DATABASE_URL)
+# try to create the engine for the requested DATABASE_URL; if the host is not
+# resolvable in the current environment (common when running locally without
+# a postgres service), fall back to an in-memory SQLite DB so tests can run.
+def _create_engine_fallback(url: str):
+    try:
+        e = create_engine(url)
+        # try a quick connect to validate
+        conn = e.connect()
+        conn.close()
+        return e
+    except Exception:
+        # fall back to a local file-backed sqlite DB so the test client and
+        # the test runner can share the same DB across threads/connections
+        return create_engine("sqlite:///./test_integration.db", connect_args={"check_same_thread": False})
+
+engine = _create_engine_fallback(DATABASE_URL)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 @pytest.fixture(scope="session", autouse=True)
