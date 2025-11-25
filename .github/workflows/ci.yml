@@ -75,8 +75,23 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push
+        id: build
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: ashikap/fastapi-calculator:latest
+
+      - name: Save docker image summary
+        run: |
+          # the image reference we pushed
+          echo "image=ashikap/fastapi-calculator:latest" > docker-image-info.txt
+          # build-push-action reliably outputs digest
+          echo "digest=${{ steps.build.outputs.digest }}" >> docker-image-info.txt
+          cat docker-image-info.txt
+
+      - name: Upload docker build summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-build-summary
+          path: docker-image-info.txt
