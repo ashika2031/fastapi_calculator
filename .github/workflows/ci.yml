@@ -27,7 +27,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           # install only the runtime packages needed by unit tests to keep this step fast
-          pip install --prefer-binary -q fastapi pydantic sqlalchemy passlib[bcrypt] bcrypt httpx pytest pytest-cov
+          pip install --prefer-binary -q fastapi pydantic sqlalchemy passlib[bcrypt] bcrypt httpx pytest pytest-cov email-validator
 
       - name: Run unit tests
         run: |
