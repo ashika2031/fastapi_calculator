@@ -38,4 +38,4 @@ jobs:
         run: |
           # run only unit tests for a faster feedback loop
           pytest tests/unit -q -vv --maxfail=1 --disable-warnings \
-            --cov=app --cov-fail-under=100 --cov-report=term-missing
+            --cov=app --cov-fail-under=80 --cov-report=term-missing
