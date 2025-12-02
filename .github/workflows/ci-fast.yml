@@ -32,7 +32,7 @@ jobs:
       - name: Install minimal runtime + test dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install --prefer-binary -q fastapi pydantic sqlalchemy passlib[bcrypt] bcrypt httpx pytest pytest-cov email-validator
+          pip install --prefer-binary -q fastapi pydantic sqlalchemy "passlib[bcrypt]==1.7.4" "bcrypt==3.2.2" httpx pytest pytest-cov email-validator
 
       - name: Show registered FastAPI routes (diagnostic)
         run: |
