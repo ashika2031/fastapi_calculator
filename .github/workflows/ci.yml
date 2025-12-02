@@ -29,6 +29,14 @@ jobs:
           # install only the runtime packages needed by unit tests to keep this step fast
           pip install --prefer-binary -q fastapi pydantic sqlalchemy passlib[bcrypt] bcrypt httpx pytest pytest-cov email-validator
 
+      - name: Show registered FastAPI routes (diagnostic)
+        run: |
+          python - <<'PY'
+          from app.main import app
+          for r in app.routes:
+              print(r.path, sorted(getattr(r, 'methods', [])))
+          PY
+
       - name: Run unit tests
         run: |
           pytest tests/unit -q -vv --maxfail=1 --disable-warnings \

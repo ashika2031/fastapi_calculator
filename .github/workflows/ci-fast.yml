@@ -34,6 +34,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install --prefer-binary -q fastapi pydantic sqlalchemy passlib[bcrypt] bcrypt httpx pytest pytest-cov email-validator
 
+      - name: Show registered FastAPI routes (diagnostic)
+        run: |
+          python - <<'PY'
+          from app.main import app
+          for r in app.routes:
+              print(r.path, sorted(getattr(r, 'methods', [])))
+          PY
+
       - name: Run unit tests (fast)
         run: |
           # run only unit tests for a faster feedback loop
